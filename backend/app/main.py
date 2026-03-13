@@ -67,3 +67,39 @@ def analyze_match_endpoint(team1: str, team2: str):
         "team2": team2_data,
         "analysis": analysis
     }
+
+
+@app.get("/analyze-sample-matches", tags=["Analysis"], summary="Örnek maç listesini analiz et")
+def analyze_sample_matches():
+    matches = [
+        {"team1": "RealMadrid", "team2": "Barcelona"},
+        {"team1": "Galatasaray", "team2": "Fenerbahce"},
+        {"team1": "ManchesterCity", "team2": "Liverpool"}
+    ]
+
+    results = []
+
+    for match in matches:
+        team1_data = get_team_elo(match["team1"])
+        team2_data = get_team_elo(match["team2"])
+
+        if not team1_data or not team2_data:
+            results.append({
+                "match": f"{match['team1']} vs {match['team2']}",
+                "error": "Takımlardan biri bulunamadı"
+            })
+            continue
+
+        analysis = analyze_match(team1_data, team2_data)
+
+        results.append({
+            "match": f"{team1_data.get('team', match['team1'])} vs {team2_data.get('team', match['team2'])}",
+            "team1": team1_data,
+            "team2": team2_data,
+            "analysis": analysis
+        })
+
+    return {
+        "count": len(results),
+        "matches": results
+    }
