@@ -1,12 +1,12 @@
 from fastapi import FastAPI
 from app.scrapers.clubelo import get_team_elo
-from app.scrapers.clubelo_fixtures import get_upcoming_fixtures
+from app.scrapers.clubelo_fixtures import get_upcoming_fixtures, get_today_fixtures
 from app.services.analyzer import analyze_match
 
 app = FastAPI(
     title="Futbol Analiz API",
-    description="Takım Elo verilerini çekip karşılaştırma, maç analizi ve yaklaşan maç tahminleri sunan FastAPI servisi.",
-    version="1.2.0"
+    description="Takım Elo verilerini çekip karşılaştırma, maç analizi ve bugünün maç listesini sunan FastAPI servisi.",
+    version="1.3.0"
 )
 
 
@@ -52,7 +52,7 @@ def compare_teams(team1: str, team2: str):
     }
 
 
-@app.get("/analyze-match/{team1}/{team2}", tags=["Analysis"], summary="Maç analizini oluştur")
+@app.get("/analyze-match/{team1}/{team2}", tags=["Analysis"], summary="Seçilen maçı analiz et")
 def analyze_match_endpoint(team1: str, team2: str):
     team1_data = get_team_elo(team1)
     team2_data = get_team_elo(team2)
@@ -70,9 +70,9 @@ def analyze_match_endpoint(team1: str, team2: str):
     }
 
 
-@app.get("/upcoming-matches", tags=["Fixtures"], summary="Yaklaşan maçları getir")
-def upcoming_matches():
-    matches = get_upcoming_fixtures()
+@app.get("/today-matches", tags=["Fixtures"], summary="Sadece bugünün maçlarını getir")
+def today_matches():
+    matches = get_today_fixtures()
 
     return {
         "count": len(matches),
@@ -80,41 +80,11 @@ def upcoming_matches():
     }
 
 
-@app.get("/upcoming-predictions", tags=["Analysis"], summary="Yaklaşan maçları Elo ile analiz et")
-def upcoming_predictions():
+@app.get("/upcoming-matches", tags=["Fixtures"], summary="Yaklaşan maçları getir")
+def upcoming_matches():
     matches = get_upcoming_fixtures()
-    results = []
-
-    for match in matches:
-        home_team = match["home_team"]
-        away_team = match["away_team"]
-
-        home_data = get_team_elo(home_team)
-        away_data = get_team_elo(away_team)
-
-        if not home_data or not away_data:
-            results.append({
-                "match": f"{home_team} vs {away_team}",
-                "country": match.get("country", ""),
-                "league": match.get("league", ""),
-                "date": match.get("date", ""),
-                "error": "Elo verisi bulunamadı"
-            })
-            continue
-
-        analysis = analyze_match(home_data, away_data)
-
-        results.append({
-            "match": f"{home_data.get('team', home_team)} vs {away_data.get('team', away_team)}",
-            "country": match.get("country", ""),
-            "league": match.get("league", ""),
-            "date": match.get("date", ""),
-            "team1": home_data,
-            "team2": away_data,
-            "analysis": analysis
-        })
 
     return {
-        "count": len(results),
-        "matches": results
+        "count": len(matches),
+        "matches": matches
     }
