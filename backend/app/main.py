@@ -1,11 +1,12 @@
 from fastapi import FastAPI
 from app.scrapers.clubelo import get_team_elo
+from app.scrapers.sofascore import get_scheduled_matches
 from app.services.analyzer import analyze_match
 
 app = FastAPI(
     title="Futbol Analiz API",
-    description="Takım Elo verilerini çekip karşılaştırma ve maç analizi yapan FastAPI servisi.",
-    version="1.0.0"
+    description="Takım Elo verilerini çekip karşılaştırma, maç analizi ve günlük maç listesi sunan FastAPI servisi.",
+    version="1.1.0"
 )
 
 
@@ -69,33 +70,43 @@ def analyze_match_endpoint(team1: str, team2: str):
     }
 
 
-@app.get("/analyze-sample-matches", tags=["Analysis"], summary="Örnek maç listesini analiz et")
-def analyze_sample_matches():
-    matches = [
-        {"team1": "RealMadrid", "team2": "Barcelona"},
-        {"team1": "Galatasaray", "team2": "Fenerbahce"},
-        {"team1": "ManchesterCity", "team2": "Liverpool"}
-    ]
+@app.get("/today-matches", tags=["Fixtures"], summary="Bugünün maçlarını getir")
+def today_matches():
+    matches = get_scheduled_matches()
 
+    return {
+        "count": len(matches),
+        "matches": matches
+    }
+
+
+@app.get("/today-predictions", tags=["Analysis"], summary="Bugünün maçlarını Elo ile analiz et")
+def today_predictions():
+    matches = get_scheduled_matches()
     results = []
 
     for match in matches:
-        team1_data = get_team_elo(match["team1"])
-        team2_data = get_team_elo(match["team2"])
+        home_team = match["home_team"]
+        away_team = match["away_team"]
 
-        if not team1_data or not team2_data:
+        home_data = get_team_elo(home_team)
+        away_data = get_team_elo(away_team)
+
+        if not home_data or not away_data:
             results.append({
-                "match": f"{match['team1']} vs {match['team2']}",
-                "error": "Takımlardan biri bulunamadı"
+                "match": f"{home_team} vs {away_team}",
+                "tournament": match.get("tournament", ""),
+                "error": "Elo verisi bulunamadı"
             })
             continue
 
-        analysis = analyze_match(team1_data, team2_data)
+        analysis = analyze_match(home_data, away_data)
 
         results.append({
-            "match": f"{team1_data.get('team', match['team1'])} vs {team2_data.get('team', match['team2'])}",
-            "team1": team1_data,
-            "team2": team2_data,
+            "match": f"{home_data.get('team', home_team)} vs {away_data.get('team', away_team)}",
+            "tournament": match.get("tournament", ""),
+            "team1": home_data,
+            "team2": away_data,
             "analysis": analysis
         })
 
