@@ -36,9 +36,9 @@ def get_upcoming_fixtures():
                 or ""
             ).strip()
 
-            country = row.get("Country", "").strip()
-            league = row.get("League", "").strip()
-            date = row.get("Date", "").strip()
+            country = (row.get("Country") or "").strip()
+            league = (row.get("League") or "").strip()
+            date = (row.get("Date") or "").strip()
 
             if not home_team or not away_team:
                 continue
@@ -65,4 +65,7 @@ def get_today_fixtures():
     today = datetime.now().strftime("%Y-%m-%d")
     fixtures = get_upcoming_fixtures()
 
-    return [match for match in fixtures if match.get("date") == today]
+    return [
+        match for match in fixtures
+        if match.get("date") == today
+    ]
