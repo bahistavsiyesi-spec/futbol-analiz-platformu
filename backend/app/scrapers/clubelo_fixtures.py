@@ -2,6 +2,7 @@ import requests
 import csv
 import io
 import logging
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -58,3 +59,10 @@ def get_upcoming_fixtures():
     except Exception as e:
         logger.warning(f"ClubElo fixtures parse hatası: {e}")
         return []
+
+
+def get_today_fixtures():
+    today = datetime.now().strftime("%Y-%m-%d")
+    fixtures = get_upcoming_fixtures()
+
+    return [match for match in fixtures if match.get("date") == today]
