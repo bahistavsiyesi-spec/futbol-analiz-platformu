@@ -12,10 +12,10 @@ def get_team_elo(team_name):
     formatted = team_name.replace(" ", "").replace("-", "")
 
     try:
-        resp = requests.get(f"{CLUBELO_BASE}/{formatted}", timeout=10)
-        resp.raise_for_status()
+        response = requests.get(f"{CLUBELO_BASE}/{formatted}", timeout=10)
+        response.raise_for_status()
 
-        reader = csv.DictReader(io.StringIO(resp.text))
+        reader = csv.DictReader(io.StringIO(response.text))
         rows = list(reader)
 
         if not rows:
