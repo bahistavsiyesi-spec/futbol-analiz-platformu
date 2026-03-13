@@ -1,135 +1,128 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<title>Futbol Analiz Platformu</title>
-<link rel="stylesheet" href="/static/style.css">
+  <meta charset="UTF-8">
+  <title>Futbol Analiz Platformu</title>
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
 
-<div class="container">
+  <div class="container">
 
-<div class="left-panel">
+    <div class="left-panel">
+      <div class="panel-header">
+        <h2>📅 Bugünün Maçları</h2>
 
-<div class="panel-header">
-<h2>📅 Bugünün Maçları</h2>
+        <div class="buttons">
+          <button class="btn">🔄 Yenile</button>
+          <button class="btn green">✔ Tümünü Seç</button>
+        </div>
+      </div>
 
-<div class="buttons">
-<button class="btn">🔄 Yenile</button>
-<button class="btn green">✔ Tümünü Seç</button>
-</div>
-</div>
+      <div class="league">🏆 AUT</div>
 
-<div class="league">🏆 AUT</div>
+      <div class="match">
+        <input type="checkbox">
+        <div>
+          <div class="teams">LASK vs Hartberg</div>
+          <div class="time">Saat bilinmiyor</div>
+        </div>
+      </div>
 
-<div class="match">
-<input type="checkbox">
-<div>
-<div class="teams">LASK vs Hartberg</div>
-<div class="time">Saat bilinmiyor</div>
-</div>
-</div>
+      <div class="league">🏆 BEL</div>
 
-<div class="league">🏆 BEL</div>
+      <div class="match">
+        <input type="checkbox">
+        <div>
+          <div class="teams">Gent vs Zulte Waregem</div>
+          <div class="time">Saat bilinmiyor</div>
+        </div>
+      </div>
 
-<div class="match">
-<input type="checkbox">
-<div>
-<div class="teams">Gent vs Zulte Waregem</div>
-<div class="time">Saat bilinmiyor</div>
-</div>
-</div>
+      <div class="league">🏆 BUL</div>
 
-<div class="league">🏆 BUL</div>
+      <div class="match">
+        <input type="checkbox">
+        <div>
+          <div class="teams">Lok Plovdiv vs Septemvri Sofia</div>
+          <div class="time">Saat bilinmiyor</div>
+        </div>
+      </div>
+    </div>
 
-<div class="match">
-<input type="checkbox">
-<div>
-<div class="teams">Lok Plovdiv vs Septemvri Sofia</div>
-<div class="time">Saat bilinmiyor</div>
-</div>
-</div>
+    <div class="right-panel">
+      <div class="analysis-card">
 
-</div>
+        <div class="league-title">
+          ⚽ Türkiye
+          <span class="match-time">20:00</span>
+        </div>
 
-<div class="right-panel">
+        <div class="teams-row">
+          <div class="team">
+            Karagümrük
+            <span>N/A</span>
+          </div>
 
-<div class="analysis-card">
+          <div class="vs">⚽</div>
 
-<div class="league-title">
-⚽ Türkiye
-<span class="match-time">20:00</span>
-</div>
+          <div class="team">
+            Fenerbahçe
+            <span>N/A</span>
+          </div>
+        </div>
 
-<div class="teams-row">
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-title">2.5 GOL ÜSTÜ</div>
+            <div class="percent">68%</div>
+          </div>
 
-<div class="team">
-Karagümrük
-<span>N/A</span>
-</div>
+          <div class="stat">
+            <div class="stat-title">İY 0.5 ÜST</div>
+            <div class="percent">55%</div>
+          </div>
 
-<div class="vs">⚽</div>
+          <div class="stat">
+            <div class="stat-title">KG VAR</div>
+            <div class="percent">62%</div>
+          </div>
 
-<div class="team">
-Fenerbahçe
-<span>N/A</span>
-</div>
+          <div class="stat">
+            <div class="stat-title">GOL ORT.</div>
+            <div class="percent">0 / 0</div>
+          </div>
+        </div>
 
-</div>
+        <div class="score">
+          <div>
+            <span>🎯 TAHMİNİ SKOR</span>
+            <b>1-2</b>
+          </div>
 
-<div class="stats">
+          <div class="confidence">
+            Yüksek
+          </div>
+        </div>
 
-<div class="stat">
-<div class="stat-title">2.5 GOL ÜSTÜ</div>
-<div class="percent">68%</div>
-</div>
+        <div class="analysis">
+          <div class="title">🧠 ANALİZ GEREKÇESİ</div>
 
-<div class="stat">
-<div class="stat-title">İY 0.5 ÜST</div>
-<div class="percent">55%</div>
-</div>
+          <ul>
+            <li>Karagümrük iç sahada oynasa da kadro kalitesi Fenerbahçe lehine.</li>
+            <li>Fenerbahçe hücum gücü ve kadro derinliği ile favori.</li>
+            <li>Gol potansiyeli yüksek bir karşılaşma.</li>
+          </ul>
+        </div>
 
-<div class="stat">
-<div class="stat-title">KG VAR</div>
-<div class="percent">62%</div>
-</div>
+      </div>
 
-<div class="stat">
-<div class="stat-title">GOL ORT.</div>
-<div class="percent">0 / 0</div>
-</div>
+      <button class="delete">🗑 Tümünü Sil</button>
+    </div>
 
-</div>
+  </div>
 
-<div class="score">
-<span>🎯 TAHMİNİ SKOR</span>
-<b>1-2</b>
-
-<div class="confidence">
-Yüksek
-</div>
-</div>
-
-<div class="analysis">
-
-<div class="title">🧠 ANALİZ GEREKÇESİ</div>
-
-<ul>
-<li>Karagümrük iç sahada oynasa da kadro kalitesi Fenerbahçe lehine.</li>
-<li>Fenerbahçe hücum gücü ve kadro derinliği ile favori.</li>
-<li>Gol potansiyeli yüksek bir karşılaşma.</li>
-</ul>
-
-</div>
-
-</div>
-
-<button class="delete">🗑 Tümünü Sil</button>
-
-</div>
-
-</div>
-
+  <script src="/static/app.js"></script>
 </body>
 </html>
