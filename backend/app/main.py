@@ -1,12 +1,12 @@
 from fastapi import FastAPI
 from app.scrapers.clubelo import get_team_elo
-from app.scrapers.sofascore import get_scheduled_matches
+from app.scrapers.clubelo_fixtures import get_upcoming_fixtures
 from app.services.analyzer import analyze_match
 
 app = FastAPI(
     title="Futbol Analiz API",
-    description="Takım Elo verilerini çekip karşılaştırma, maç analizi ve günlük maç listesi sunan FastAPI servisi.",
-    version="1.1.0"
+    description="Takım Elo verilerini çekip karşılaştırma, maç analizi ve yaklaşan maç tahminleri sunan FastAPI servisi.",
+    version="1.2.0"
 )
 
 
@@ -70,9 +70,9 @@ def analyze_match_endpoint(team1: str, team2: str):
     }
 
 
-@app.get("/today-matches", tags=["Fixtures"], summary="Bugünün maçlarını getir")
-def today_matches():
-    matches = get_scheduled_matches()
+@app.get("/upcoming-matches", tags=["Fixtures"], summary="Yaklaşan maçları getir")
+def upcoming_matches():
+    matches = get_upcoming_fixtures()
 
     return {
         "count": len(matches),
@@ -80,9 +80,9 @@ def today_matches():
     }
 
 
-@app.get("/today-predictions", tags=["Analysis"], summary="Bugünün maçlarını Elo ile analiz et")
-def today_predictions():
-    matches = get_scheduled_matches()
+@app.get("/upcoming-predictions", tags=["Analysis"], summary="Yaklaşan maçları Elo ile analiz et")
+def upcoming_predictions():
+    matches = get_upcoming_fixtures()
     results = []
 
     for match in matches:
@@ -95,7 +95,9 @@ def today_predictions():
         if not home_data or not away_data:
             results.append({
                 "match": f"{home_team} vs {away_team}",
-                "tournament": match.get("tournament", ""),
+                "country": match.get("country", ""),
+                "league": match.get("league", ""),
+                "date": match.get("date", ""),
                 "error": "Elo verisi bulunamadı"
             })
             continue
@@ -104,7 +106,9 @@ def today_predictions():
 
         results.append({
             "match": f"{home_data.get('team', home_team)} vs {away_data.get('team', away_team)}",
-            "tournament": match.get("tournament", ""),
+            "country": match.get("country", ""),
+            "league": match.get("league", ""),
+            "date": match.get("date", ""),
             "team1": home_data,
             "team2": away_data,
             "analysis": analysis
