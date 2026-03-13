@@ -5,12 +5,12 @@ from app.services.analyzer import analyze_match
 
 app = FastAPI(
     title="Futbol Analiz API",
-    description="Takım Elo verilerini çekip karşılaştırma, maç analizi ve bugünün maç listesini sunan FastAPI servisi.",
-    version="1.3.0"
+    description="Takım Elo verilerini çekip maç analizi yapan API",
+    version="1.0.0"
 )
 
 
-@app.get("/", tags=["Root"], summary="Ana sayfa")
+@app.get("/")
 def home():
     return {
         "message": "Futbol Analiz API çalışıyor",
@@ -19,12 +19,12 @@ def home():
     }
 
 
-@app.get("/health", tags=["System"], summary="Sağlık kontrolü")
+@app.get("/health")
 def health():
     return {"status": "ok"}
 
 
-@app.get("/team-elo/{team_name}", tags=["Teams"], summary="Takım Elo verisini getir")
+@app.get("/team-elo/{team_name}")
 def team_elo(team_name: str):
     data = get_team_elo(team_name)
 
@@ -34,8 +34,9 @@ def team_elo(team_name: str):
     return data
 
 
-@app.get("/compare-teams/{team1}/{team2}", tags=["Analysis"], summary="İki takımı Elo ile karşılaştır")
+@app.get("/compare-teams/{team1}/{team2}")
 def compare_teams(team1: str, team2: str):
+
     team1_data = get_team_elo(team1)
     team2_data = get_team_elo(team2)
 
@@ -52,8 +53,9 @@ def compare_teams(team1: str, team2: str):
     }
 
 
-@app.get("/analyze-match/{team1}/{team2}", tags=["Analysis"], summary="Seçilen maçı analiz et")
+@app.get("/analyze-match/{team1}/{team2}")
 def analyze_match_endpoint(team1: str, team2: str):
+
     team1_data = get_team_elo(team1)
     team2_data = get_team_elo(team2)
 
@@ -70,8 +72,9 @@ def analyze_match_endpoint(team1: str, team2: str):
     }
 
 
-@app.get("/today-matches", tags=["Fixtures"], summary="Sadece bugünün maçlarını getir")
+@app.get("/today-matches")
 def today_matches():
+
     matches = get_today_fixtures()
 
     return {
@@ -80,8 +83,9 @@ def today_matches():
     }
 
 
-@app.get("/upcoming-matches", tags=["Fixtures"], summary="Yaklaşan maçları getir")
+@app.get("/upcoming-matches")
 def upcoming_matches():
+
     matches = get_upcoming_fixtures()
 
     return {
