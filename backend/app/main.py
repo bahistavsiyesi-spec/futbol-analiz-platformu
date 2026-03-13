@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from app.scrapers.clubelo import get_team_elo
-from app.analyzer import analyze_match
+from app.services.analyzer import analyze_match
 
 app = FastAPI()
 
@@ -50,10 +50,10 @@ def analyze_match_endpoint(team1: str, team2: str):
     if not team1_data or not team2_data:
         return {"error": "Takımlardan biri bulunamadı"}
 
-    result = analyze_match(team1_data, team2_data)
+    analysis = analyze_match(team1_data, team2_data)
 
     return {
         "team1": team1_data,
         "team2": team2_data,
-        "analysis": result
+        "analysis": analysis
     }
