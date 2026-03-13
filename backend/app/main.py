@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from app.scrapers.clubelo import get_team_elo
+from app.analyzer import analyze_match
 
 app = FastAPI()
 
@@ -38,4 +39,21 @@ def compare_teams(team1: str, team2: str):
         "team1": team1_data,
         "team2": team2_data,
         "elo_difference": elo_diff
+    }
+
+
+@app.get("/analyze-match/{team1}/{team2}")
+def analyze_match_endpoint(team1: str, team2: str):
+    team1_data = get_team_elo(team1)
+    team2_data = get_team_elo(team2)
+
+    if not team1_data or not team2_data:
+        return {"error": "Takımlardan biri bulunamadı"}
+
+    result = analyze_match(team1_data, team2_data)
+
+    return {
+        "team1": team1_data,
+        "team2": team2_data,
+        "analysis": result
     }
