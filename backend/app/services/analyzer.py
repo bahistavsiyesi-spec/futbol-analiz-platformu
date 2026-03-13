@@ -1,6 +1,4 @@
 def analyze_match(team1, team2):
-    
-    # Elo değerlerini güvenli şekilde al
     elo1 = team1.get("elo", 0)
     elo2 = team2.get("elo", 0)
 
@@ -9,7 +7,6 @@ def analyze_match(team1, team2):
 
     diff = elo1 - elo2
 
-    # Tahmin motoru
     if diff >= 80:
         prediction = "1"
         confidence = "Yüksek"
